@@ -1,11 +1,10 @@
-$kbAppEndpoint = "<replace-me>.azurewebsites.net"
-$kbAppKey = "xxxxxxxxxx"
-
-$kbName = "covid-test5"
+$QnACogServiceKey = "" 
+$kbAppServiceEndpoint ""
+$kbName = ""
 
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.Add("Content-Type", "application/json")
-$headers.Add("Ocp-Apim-Subscription-Key", $kbAppKey)
+$headers.Add("Ocp-Apim-Subscription-Key", $QnACogServiceKey)
 
 $body = "{`"name`": `"$kbName`",`"urls`": [`"https://www.cdc.gov/coronavirus/2019-ncov/faq.html`"]}"
 
@@ -34,6 +33,6 @@ If ($createStatusResponse.operationState -eq "Succeeded")
 
     $headers.Remove("Ocp-Apim-Subscription-Key")
     $headers.Add("Authorization", "EndpointKey $($runtimeKeyResponse.primaryEndpointKey)")
-    $questionResponse = Invoke-RestMethod "https://$kbAppEndpoint/qnamaker$($createStatusResponse.resourceLocation)/generateAnswer" -Method 'POST' -Headers $headers -Body $question
+    $questionResponse = Invoke-RestMethod "https://$kbAppServiceEndpoint/qnamaker$($createStatusResponse.resourceLocation)/generateAnswer" -Method 'POST' -Headers $headers -Body $question
     $questionResponse | ConvertTo-Json
 }
